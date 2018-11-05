@@ -10,16 +10,17 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('https://www.anapioficeandfire.com/api/houses')
-         .then(res => {
-           let data = this.state.data;
-           data.push(res.data);
-           this.setState({
-             data: data,
-           })
-           console.log(this.state.data[0])
-         })
-         .catch(err => console.dir(err));
+
+    for (let i = 1; i < 10000; i++) {
+      axios.get(`https://www.anapioficeandfire.com/api/houses/${i}`)
+          .then(res => {
+            let data = this.state.data.concat(res.data);
+            this.setState({
+              data: data,
+            })
+          })
+          .catch(err => console.dir(err));
+      }
   }
 
 
@@ -27,7 +28,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.data[0].map(x => <p>{x.name}</p>) }
+        {this.state.data.map((x,i) => <p key={i}>{x.name}</p>) }
       </div>
     );
   }
